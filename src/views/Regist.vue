@@ -1,6 +1,8 @@
 <template>
   <body id="poster">
   <el-form :model="RegistForm" :rules="rules" ref="RegistForm" class="login-container" label-position="left" label-width="0px">
+    <el-page-header @back="goBack">
+    </el-page-header>
     <h3 class="login_title">欢迎使用xx文档</h3>
     <el-form-item prop='username'>
       <el-input  prefix-icon="el-icon-user-solid" type="text" v-model="RegistForm.username" auto-complete="off" placeholder="用户名"></el-input>
@@ -23,7 +25,10 @@
     <el-form-item  prop='avatar'>
       <el-input prefix-icon="el-icon-picture" type="text" v-model="RegistForm.avatar" auto-complete="off" placeholder="头像图片地址"></el-input>
     </el-form-item>
+    <el-avatar v-if="RegistForm.avatar!=''" v-bind:src="RegistForm.avatar">
 
+    </el-avatar>
+    <br>
     <el-form-item style="width: 100%">
       <el-button type="primary" style="width: 100%;background: #505458;border: none" @click="submitForm('RegistForm')">注册</el-button>
     </el-form-item>
@@ -34,6 +39,8 @@
 
 
 <script>
+import qs from "qs"
+import Element from "element-ui";
 export default {
   name: "Login",
   data() {
@@ -72,19 +79,19 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.RegistForm.username)
-          console.log(this.RegistForm.password)
-          console.log(this.RegistForm.email)
+          let param = {
+            username: this.RegistForm.username,
+            password: this.RegistForm.password,
+            password2: this.RegistForm.password2,
+            avatar: this.RegistForm.avatar,
+            email: this.RegistForm.email
+          }
           this.$axios
-              .post('/register', {
-                username: this.RegistForm.username,
-                password: this.RegistForm.password,
-                password2: this.RegistForm.password2,
-                avatar: this.RegistForm.avatar,
-                email: this.RegistForm.email
-              })
+              .post('/register', qs.stringify(param))
               .then(successResponse => {
-                if (successResponse.data.code === 200)
+                let res = successResponse.data
+                console.log(res)
+                if (res.result === true)
                 {
                   this.$message({
                     message: '注册成功',
@@ -93,12 +100,11 @@ export default {
                   this.$router.push({path: '/'}) // 注册成功则返回登陆页面（path:'/'为登陆页面）
                 }
                 else{
-                    this.$message.error(successResponse.data.message);
+                  Element.Message.error(res.msg,{duration: 3 * 1000})
                 }
               })
               .catch(failResponse => {
-                // alert("注册失败,请检查输入")
-                // this.$router.push({path: '/'})
+
               })
         } else {
           return false;
@@ -108,9 +114,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    regist(){
-      this.$router.push({path: '/Regist' })
+    goBack:function ()
+    {
+      this.$router.push("/")
     }
+
 
   }
 }
@@ -118,7 +126,7 @@ export default {
 
 <style>
 #poster {
-  background:url("../assets/bkgd.jpg") no-repeat;
+  background-color: #F5F5F5;
   background-position: center;
   height: 100%;
   width: 100%;

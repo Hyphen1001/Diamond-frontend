@@ -14,55 +14,51 @@
         </el-page-header>
         <br><br>
         <el-scrollbar class="el-scrollbar__wrap" style="height:600px">
-        <div>
-          <el-input style="width: 80%;  margin-right:20%"
-                    placeholder="请输入文档名" bn
-                    v-model="title"
-                    clearable>
-          </el-input>
-          <br> <br> <br>
-          <el-card style="height: 610px;width: 80%">
-            <quill-editor v-model="content" ref="myQuillEditor" style="height: 500px;" :options="editorOption">
-            </quill-editor>
-          </el-card>
-          <br><br>
-          <el-checkbox v-model="checked" style="margin-right: 10%;margin-left: 0%">允许组员查看</el-checkbox>
-          <el-checkbox v-model="checked" style="margin-right: 10%">允许组员评论</el-checkbox>
-          <el-checkbox v-model="checked" style="margin-right: 5%">允许组员修改</el-checkbox>
-          <el-button type="success" round style="margin-right:5%" @click="collect()">收藏</el-button>
-          <el-button type="success" round style="margin-right:10%" @click="save1(content)">保存</el-button>
-          <br><br>
-          <el-timeline style="width: 80%" v-for="comment in commentlist">
-            <el-timeline-item v-bind:timestamp=formatDate(comment.object.time) placement="top">
+          <div>
+            <el-input style="width: 80%;  margin-right:20%"
+                      placeholder="请输入文档名" bn
+                      v-model="title"
+                      clearable>
+            </el-input>
+            <br> <br> <br>
+            <el-card style="height: 610px;width: 80%">
+              <quill-editor v-model="content" ref="myQuillEditor" style="height: 500px;" :options="editorOption">
+              </quill-editor>
+            </el-card>
+            <br><br>
+            <el-button type="success" round style="margin-left:50%" @click="collect()">收藏</el-button>
+            <br><br>
+            <el-timeline style="width: 80%" v-for="comment in commentlist">
+              <el-timeline-item v-bind:timestamp=formatDate(comment.object.time) placement="top">
 
-              <el-card style="width: 95%">
-                <el-container>
-                  <el-aside width="8%"><el-avatar v-bind:src=comment.user.avatar ></el-avatar><br>
-                    {{comment.user.username}}
-                  </el-aside>
-                  <el-main>
-                    <p>{{comment.object.content}}</p>
-                  </el-main>
-                </el-container>
+                <el-card style="width: 95%">
+                  <el-container>
+                    <el-aside width="8%"><el-avatar v-bind:src=comment.user.avatar ></el-avatar><br>
+                      {{comment.user.username}}
+                    </el-aside>
+                    <el-main>
+                      <p>{{comment.object.content}}</p>
+                    </el-main>
+                  </el-container>
 
 
-              </el-card>
-            </el-timeline-item>
+                </el-card>
+              </el-timeline-item>
 
-          </el-timeline>
-          <el-input
-              type="textarea"
-              :autosize="{ minRows: 4, maxRows: 4}"
-              placeholder="文明评论更好哦"
-              style="width: 80%; margin-right: 20%"
-              maxlength="100"
-              show-word-limit
-              v-model="textarea">
-          </el-input>
-          <br><br>
-          <el-button type="success" round style="margin-left:50%" @click="sendcomment">发表</el-button>
-          <br><br>
-        </div>
+            </el-timeline>
+            <el-input
+                type="textarea"
+                :autosize="{ minRows: 4, maxRows: 4}"
+                placeholder="文明评论更好哦"
+                style="width: 80%; margin-right: 20%"
+                maxlength="100"
+                show-word-limit
+                v-model="textarea">
+            </el-input>
+            <br><br>
+            <el-button type="success" round style="margin-left:50%" @click="sendcomment">发表</el-button>
+            <br><br>
+          </div>
         </el-scrollbar>
       </el-main>
 
@@ -107,7 +103,7 @@ export default {
   },
   methods: {
     goBack:function (){
-        this.$router.push("/work")
+      this.$router.push("/work")
     },
     save:function (){
       this.$router.push("/work")
@@ -153,10 +149,6 @@ export default {
                 message:'修改成功',
                 type : 'success'
               });
-              // this.$router.push({ path: '/work/viewdoc', query: {
-              //     file : file,
-              //     commentlist : tes
-              //   }})
             }
             else {
               this.$message.error(res.msg);
@@ -184,30 +176,30 @@ export default {
         content : this.textarea
       }
       this.$axios.post("/" + sessionStorage.getItem("sid") + "/" + this.docid + "/commentdoc" , qs.stringify(param))
-      .then( response => {
-        let res = response.data
-        if (res.result === true)
-        {
-          this.$message({
-            message : "发布成功",
-            type : "success"
-          })
-          this.commentlist.push({
-             user : {
-               username : sessionStorage.getItem("username"),
-               avatar : sessionStorage.getItem("avatar")
-             },
-            object :{
-               content : this.textarea,
-              time : new Date()
+          .then( response => {
+            let res = response.data
+            if (res.result === true)
+            {
+              this.$message({
+                message : "发布成功",
+                type : "success"
+              })
+              this.commentlist.push({
+                user : {
+                  username : sessionStorage.getItem("username"),
+                  avatar : sessionStorage.getItem("avatar")
+                },
+                object :{
+                  content : this.textarea,
+                  time : new Date()
+                }
+              })
+              this.textarea = ''
+            }
+            else {
+              this.$message.error(res.msg)
             }
           })
-          this.textarea = ''
-        }
-        else {
-          this.$message.error(res.msg)
-        }
-      })
     }
   },
 }

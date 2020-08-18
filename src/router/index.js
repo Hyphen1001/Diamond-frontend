@@ -13,6 +13,11 @@ import mycreate from "@/views/mycreate";
 import test from "@/views/test";
 import bin from "@/views/bin"
 import showdoc from "../views/showdoc";
+import Header from "@/components/Header";
+import template from "@/views/template";
+import setteam from "@/views/setteam";
+import blank from "@/views/blank";
+import viewdoc from "@/views/viewdoc";
 
 
 Vue.use(VueRouter)
@@ -88,6 +93,32 @@ Vue.use(VueRouter)
       name:'recent',
       component: recent
     },
+
+    {
+      path:'/header',
+      name:'header',
+      component: Header
+    },
+    {
+      path:'/work/template',
+      name:'template',
+      component: template
+    },
+    {
+      path: '/work/setteam',
+      name: 'setteam',
+      component: setteam
+    },
+    {
+      path: '/blank',
+      name: 'blank',
+      component: blank
+    },
+    {
+      path: '/work/viewdoc',
+      name: 'viewdoc',
+      component: viewdoc
+    }
 ]
 
 const router = new VueRouter({

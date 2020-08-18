@@ -1,33 +1,29 @@
 <template>
-  <div>
-    <el-card style="height: 610px;">
-      <quill-editor v-model="content" ref="myQuillEditor" style="height: 500px;" :options="editorOption">
-      </quill-editor>
-    </el-card>
-  </div>
+  <body id="poster">
+<div>
+<showfile>
+</showfile>
+</div>
+  </body>
 </template>
 
 <script>
-import {
-  quillEditor
-} from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+import showfile from "@/components/showfile"
+import file from "@/components/file";
 export default {
-  name: 'FuncFormsEdit',
   components: {
-    quillEditor
+    showfile,
+    file
   },
-  data() {
-    return {
-      content: null,
-      editorOption: {}
-    }
+  data()
+  {
+    return{}
+
   }
 }
 
 </script>
 
 <style scoped>
+
 </style>

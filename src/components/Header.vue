@@ -10,26 +10,44 @@
         active-text-color="#ffd04b">
 
       <el-menu-item class = "logo">Diamond文档</el-menu-item>
-
-      <el-dropdown :hide-on-click="false">
-                      <span class="el-dropdown-link">
-                        <el-avatar :size="50" :src="user.avatar" size="mini" ></el-avatar>
-                      </span>
+      <el-dropdown class = "avat">
+        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" class = "el-dropdown-link">
+        </el-avatar><i class="el-icon-arrow-down el-icon--right"></i>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>{{user.username}}</el-dropdown-item>
-          <el-dropdown-item><a href="../changeinfo"> 修改信息</a></el-dropdown-item>
-          <el-dropdown-item divided>注销</el-dropdown-item>
+          <el-dropdown-item>修改个人信息</el-dropdown-item>
+          <el-dropdown-item>注销</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
     </el-menu>
-
   </div>
 </template>
 
 <script>
 export default {
-  name: "head"
+  name: "header",
+  data() {
+    return {
+      activeIndex: '1',
+      activeIndex2: '1'
+    };
+  },
+  methods: {
+
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    tochange()
+    {
+      console.log("123123")
+      this.$router.push({path: '/'})
+    }
+  }
 }
 </script>
 

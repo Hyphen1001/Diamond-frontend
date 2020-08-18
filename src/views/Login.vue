@@ -1,7 +1,7 @@
 <template>
   <body id="poster">
   <el-form :model="loginForm" :rules="rules" ref="loginForm" class="login-container" label-position="left" label-width="0px">
-    <h3 class="login_title">欢迎使用xx文档</h3>
+    <h3 class="login_title">欢迎使用Diamond文档</h3>
     <el-form-item prop='username'>
       <el-input  prefix-icon="el-icon-user-solid" type="text" v-model="loginForm.username" auto-complete="off" placeholder="用户名"></el-input>
     </el-form-item>
@@ -23,7 +23,7 @@
 
 <script>
 import Element from "element-ui";
-
+import qs from "qs";
 export default {
   name: "Login",
   data() {
@@ -46,28 +46,35 @@ export default {
     }
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+    submitForm(FormName) {
+      this.$refs[FormName].validate((valid) => {
         if (valid) {
+
+          let param = {
+            username: this.loginForm.username,
+            password: this.loginForm.password
+          }
           const _this = this
+
           this.$axios
-              .post('/login', {
-                username: this.loginForm.username,
-                password: this.loginForm.password
-              }
-              )
-              .then(successResponse => { //后端返回successResponse，后端具体实现不明
+              .post('/login',qs.stringify(param))
+              .then(successResponse => {
+
                 let res = successResponse.data
-                console.log(res)
-                if (res.code === 200)
+                if (res.result === true)
                 {
+                  sessionStorage.setItem("avatar",res.datas.avatar)
+                  sessionStorage.setItem("username",res.datas.username)
+                  sessionStorage.setItem("sid",res.msg)
+                  sessionStorage.setItem("umessage",res.datas.umessage)
+                  sessionStorage.setItem("email",res.datas.email)
                   _this.$router.push("/intimate")
                   this.$message({
                     message: '登陆成功',
                     type: 'success'
                   });
                 }
-                else {
+                else if (res.result === false){
                   Element.Message.error('用户名或密码错误', {duration: 3 * 1000})
                 }
               })
@@ -75,6 +82,7 @@ export default {
                 // alert("用户名或密码错误,请重新输入")
               })
         } else {
+          console.log("?????????????")
           return false;
         }
       });
@@ -92,7 +100,7 @@ export default {
 
 <style>
 #poster {
-  background:url("../assets/bkgd.jpg") no-repeat;
+  background-color: #F5F5F5;
   background-position: center;
   height: 100%;
   width: 100%;

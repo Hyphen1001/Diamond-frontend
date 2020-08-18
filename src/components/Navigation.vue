@@ -8,8 +8,8 @@
         mode="horizontal"
         @select="handleSelect"
         background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b">
+        text-color="#808080"
+        active-text-color="#696969">
 
       <el-menu-item class = "logo">Diamond文档</el-menu-item>
 
